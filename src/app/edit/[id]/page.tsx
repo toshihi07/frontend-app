@@ -1,13 +1,16 @@
+// app/edit/[id]/page.tsx
 import EditForm from "@/components/EditForm"
 import { getItem } from "@/lib/items"
+import { notFound } from "next/navigation"
 
-// ✅ 型注釈を外すことで、Next.jsの推論に任せる
-export default async function EditPage({ params }: any) {
-  const item = await getItem(params.id)
+export default async function EditItemPage({ params }: { params: { id: string } }) {
+  try {
+    const item = await getItem(params.id)
+    if (!item) return notFound()
 
-  if (!item) {
-    return <div>Item not found</div>
+    return <EditForm item={item} />
+  } catch (e) {
+    console.error(e)
+    return notFound()
   }
-
-  return <EditForm item={item} />
 }

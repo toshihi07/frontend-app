@@ -1,3 +1,4 @@
+// components/EditForm.tsx
 "use client"
 
 import { useState } from "react"
@@ -24,9 +25,15 @@ export default function EditForm({ item }: { item: Item }) {
         className="border p-2 mb-4 w-full"
       />
       <button
-        onClick={() => {
-          updateItem(item.id, { id: item.id, name, description: desc })
-          router.push("/")
+        onClick={async () => {
+          if (item.id) {
+            await updateItem(item.id, {
+              id: item.id,
+              name,
+              description: desc,
+            })
+            router.push("/")
+          }
         }}
         className="bg-blue-500 text-white px-4 py-2"
       >

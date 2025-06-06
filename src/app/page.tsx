@@ -1,10 +1,27 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { getItems, deleteItem } from "@/lib/items"
+import { Item } from "@/types/item"
 
 export default function ItemListPage() {
-  const items = getItems()
+  const [items, setItems] = useState<Item[]>([])
+
+  useEffect(() => {
+    getItems().then(setItems).catch((err) => {
+      console.error("データ取得失敗", err)
+    })
+  }, [])
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteItem(id)
+      setItems((prev) => prev.filter((item) => item.id !== id))
+    } catch (err) {
+      alert("削除に失敗しました")
+    }
+  }
 
   return (
     <main className="p-4">
@@ -20,9 +37,14 @@ export default function ItemListPage() {
             <div className="space-x-2">
               <Link href={`/edit/${item.id}`} className="text-blue-600 underline">Edit</Link>
               <button
-                onClick={() => {
-                  deleteItem(item.id)
-                  location.reload()
+                onClick={async () => {
+                  if (!item.id) return
+                  try {
+                    await deleteItem(item.id)
+                    location.reload()
+                  } catch (err) {
+                    console.error("削除失敗:", err)
+                  }
                 }}
                 className="text-red-600"
               >
