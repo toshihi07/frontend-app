@@ -14,7 +14,8 @@ RUN npm install
 COPY . .
 
 # Next.jsをビルド（SSR前提）
-RUN npm run build -- --no-lint --no-type-check
+ENV TSC_COMPILE_ON_ERROR=true
+RUN npm run build -- --no-lint
 
 # 必要な環境変数
 ENV NODE_ENV=production
