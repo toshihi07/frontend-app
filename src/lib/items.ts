@@ -4,18 +4,18 @@ import { Item } from "@/types/item"
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export const getItems = async (): Promise<Item[]> => {
-  const res = await fetch(`${BASE_URL}/items`)
+  const res = await fetch(`${BASE_URL}/api/items`)
   return res.json()
 }
 
 export const getItem = async (id: string): Promise<Item | undefined> => {
-  const res = await fetch(`${BASE_URL}/items/${id}`)
+  const res = await fetch(`${BASE_URL}/api/items/${id}`)
   if (!res.ok) throw new Error("取得に失敗しました")
   return res.json()
 }
 
 export const addItem = async (item: Item) => {
-  const res = await fetch(`${BASE_URL}/items`, {
+  const res = await fetch(`${BASE_URL}/api/items`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export const addItem = async (item: Item) => {
 }
 
 export const updateItem = async (id: string, updated: Item) => {
-  const res = await fetch(`${BASE_URL}/items/${id}`, {
+  const res = await fetch(`${BASE_URL}/api/items/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export const updateItem = async (id: string, updated: Item) => {
 }
 
 export const deleteItem = async (id: string) => {
-  const res = await fetch(`${BASE_URL}/items/${id}`, {
+  const res = await fetch(`${BASE_URL}/api/items/${id}`, {
     method: "DELETE",
   })
 
